@@ -17,12 +17,17 @@ def postar_twitter(msg):
   
 def handler(event, context):
     print("Evento recebido = " + str(event))
+    # Decode UTF-8 bytes to Unicode, and convert single quotes 
+    # to double quotes to make it valid JSON
+    texto=event['data'].decode('utf-8').replace("'", '"')
+    print('Texto = '+ texto)
+    dados = json.loads(texto)
     
     try:        
-        if not 'msg' in event['data']:
+        if not 'msg' in dados:
           return 'Campo vazio : msg'
         # ler a msg
-        texto = event['data']['msg']
+        texto = dados['msg']
         print("Texto = "+ texto)
         return postar_twitter(texto)
         
